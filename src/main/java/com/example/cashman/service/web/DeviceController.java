@@ -1,6 +1,6 @@
 package com.example.cashman.service.web;
 
-import com.example.cashman.repository.dto.DenominationDTO;
+import com.example.cashman.Error;
 import com.example.cashman.repository.dto.DeviceDTO;
 import com.example.cashman.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 
 @Controller
 public class DeviceController {
@@ -42,8 +41,8 @@ public class DeviceController {
     @Transactional
     public ResponseEntity<DeviceDTO> findATM(@PathVariable Long id) {
         DeviceDTO atmDto = deviceService.fetchByID(id);
-        if(atmDto != null)
-         return ResponseEntity.ok(atmDto);
+        if (atmDto != null)
+            return ResponseEntity.ok(atmDto);
         else
             return ResponseEntity.notFound().build();
     }
@@ -53,26 +52,32 @@ public class DeviceController {
     @Transactional
     public ResponseEntity<DeviceDTO> findATM(@RequestParam String serialNumber) {
         DeviceDTO atmDto = deviceService.fetchBySerialNumber(serialNumber);
-        if(atmDto != null)
+        if (atmDto != null)
             return ResponseEntity.ok(atmDto);
         else
             return ResponseEntity.notFound().build();
     }
 
-    @RequestMapping(value = "/withdraw/{id}/{withdrawAmount}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/withdraw/{id}/{withdrawAmount:.+}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @Transactional
     public ResponseEntity<DeviceDTO> updateATM(@PathVariable Long id, @PathVariable BigDecimal withdrawAmount) {
-        DeviceDTO atmDto = deviceService.withdraw(id, withdrawAmount);
-        return ResponseEntity.ok(atmDto);
+        DeviceDTO deviceDTO = deviceService.withdraw(id, withdrawAmount);
+        if (deviceDTO.getErrors().contains(Error.DEVICE_NOT_FOUND_ERROR.toString())) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(deviceDTO);
     }
 
     @RequestMapping(value = "/addTo/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @Transactional
-    public ResponseEntity<DeviceDTO> updateATM(@PathVariable Long id, @RequestBody Collection<DenominationDTO> body, UriComponentsBuilder b) {
-        DeviceDTO atmDto = deviceService.addTo(id, body);
-        return ResponseEntity.ok(atmDto);
+    public ResponseEntity<DeviceDTO> updateATM(@PathVariable Long id, @RequestBody DeviceDTO body, UriComponentsBuilder b) {
+        DeviceDTO deviceDTO = deviceService.addTo(id, body);
+        if (deviceDTO.getErrors().contains(Error.WITHDRAWAL_ERROR.toString())) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(deviceDTO);
     }
 
 

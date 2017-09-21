@@ -15,9 +15,10 @@ public interface DeviceService {
     DeviceDTO fetchBySerialNumber(String serialNumber);
 
     @Transactional
-    DeviceDTO addTo(Long id, Collection<DenominationDTO> toAdd);
+    DeviceDTO addTo(Long id, DeviceDTO toAdd);
     @Transactional
     DeviceDTO withdraw(Long deviceId, BigDecimal amount);
+    @Transactional
     DeviceDTO initializeATM(DeviceDTO atmDTO);
     boolean deactivateATM(Long id);
 }

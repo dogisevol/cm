@@ -3,7 +3,8 @@ package com.example.cashman;
 public enum Error {
 
     DEVICE_NOT_FOUND_ERROR("Device has not been found"),
-    WITHDRAWAL_ERROR("Required amount cannot be withdrawn");
+    WITHDRAWAL_ERROR("Required amount cannot be withdrawn"),
+    NEGATIVE_COUNT("Count cannot be negative");
 
     private final String text;
 

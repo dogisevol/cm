@@ -7,14 +7,12 @@ import com.example.cashman.domain.Denomination;
 import com.example.cashman.domain.Device;
 import com.example.cashman.repository.DenominationRepository;
 import com.example.cashman.repository.DeviceRepository;
-import com.example.cashman.repository.dto.DenominationDTO;
 import com.example.cashman.repository.dto.DeviceDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -51,8 +49,25 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public DeviceDTO addTo(Long id, Collection<DenominationDTO> toAdd) {
-        return null;
+    public DeviceDTO addTo(Long id, DeviceDTO toAdd) {
+        Device device = deviceRepository.fetchByID(id);
+        DeviceDTO result;
+        if (device == null) {
+            result = new DeviceDTO(Error.DEVICE_NOT_FOUND_ERROR);
+        } else {
+            device.getBanknotes().stream().forEach(banknote -> toAdd.getBanknotes().forEach(denominationDTO -> {
+                if (denominationDTO.getDenomination().doubleValue() == banknote.getDenomination().doubleValue()){
+                    banknote.setCount(banknote.getCount() + denominationDTO.getCount());
+                }
+            }));
+            device.getCoins().stream().forEach(coin -> toAdd.getCoins().forEach(denominationDTO -> {
+                if (denominationDTO.getDenomination().doubleValue() == coin.getDenomination().doubleValue()){
+                    coin.setCount(coin.getCount() + denominationDTO.getCount());
+                }
+            }));
+            result = new DeviceDTO(deviceRepository.save(device));
+        }
+        return result;
     }
 
     @Override

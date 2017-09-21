@@ -15,13 +15,13 @@ public class DeviceDTO {
     private String serialNumber;
     private Collection<DenominationDTO> banknotes = new ArrayList<>();
     private Collection<DenominationDTO> coins = new ArrayList<>();
-    private List<Error> errors = new ArrayList<>();
+    private List<String> errors = new ArrayList<>();
 
     public DeviceDTO() {
     }
 
     public DeviceDTO(Error error) {
-        addError(error);
+        addError(error.toString());
     }
 
     public DeviceDTO(Long id, Collection<DenominationDTO> banknotes, Collection<DenominationDTO> coins) {
@@ -72,11 +72,11 @@ public class DeviceDTO {
         this.serialNumber = serialNumber;
     }
 
-    public List<Error> getErrors() {
+    public List<String> getErrors() {
         return errors;
     }
 
-    public void addError(Error error) {
+    public void addError(String error) {
         errors.add(error);
     }
 
