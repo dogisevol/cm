@@ -105,7 +105,8 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     private boolean withdraw(Device device, BigDecimal amount) {
-        final BigDecimal mFactor = new BigDecimal(1000);
+        amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+        final BigDecimal mFactor = new BigDecimal(M_FACTOR);
         int withdrawAmount = amount.multiply(mFactor).intValue();
         List<Banknote> banknotes = new ArrayList(device.getBanknotes());
         List<Coin> coins = new ArrayList(device.getCoins());
@@ -117,9 +118,9 @@ public class DeviceServiceImpl implements DeviceService {
                 weights.add(banknotes.get(i));
             }
         }
-        for (int i = banknotes.size() - 1; i >= 0; i--) {
-            for (int j = 0; j < banknotes.get(i).getCount(); j++) {
-                weights.add(banknotes.get(i));
+        for (int i = coins.size() - 1; i >= 0; i--) {
+            for (int j = 0; j < coins.get(i).getCount(); j++) {
+                weights.add(coins.get(i));
             }
         }
         int N = weights.size();
@@ -130,7 +131,7 @@ public class DeviceServiceImpl implements DeviceService {
         for (int i = 1; i < N; i++) {
             int j = 0;
             for (; j <= withdrawAmount; j++) {
-                int weight = weights.get(i - 1).getDenomination().multiply(mFactor).intValue();
+                int weight = weights.get(i - 1).getDenomination().multiply(mFactor).setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
                 if (weight > j) {
                     A[i][j] = A[i - 1][j];
                 } else {
@@ -145,7 +146,7 @@ public class DeviceServiceImpl implements DeviceService {
                     int tempI_1 = A[k - 1][m];
                     if ((k == 0 && tempI > 0) || (k > 0 && tempI != tempI_1)) {
                         Denomination denomination = weights.get(k - 1);
-                        double weight = weights.get(i - 1).getDenomination().multiply(mFactor).intValue();
+                        double weight = weights.get(k - 1).getDenomination().multiply(mFactor).setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
                         m -= weight;
                         denomination.setCount(denomination.getCount() - 1);
                     }

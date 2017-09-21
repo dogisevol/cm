@@ -14,7 +14,7 @@ public class Denomination implements Serializable {
     @GeneratedValue(generator = "denomination_generator")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal denomination;
 
     @Column(nullable = false)

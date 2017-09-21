@@ -95,7 +95,7 @@ public class DeviceServiceTests {
     public void testWithdrawAllAustralianCurrency1() {
         withdrawPositive(new double[]{0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100},
                 new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
-                new int[]{0, 0, 0, 0, 0, 1, 1, 1, 1, 0}, 35.5);
+                new int[]{0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0}, 35.5);
     }
 
     @Test
@@ -105,13 +105,37 @@ public class DeviceServiceTests {
                 new int[]{0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0}, 37.7);
     }
 
+    @Test
+    public void testWithdraw() {
+        withdrawPositive(new double[]{0.05, 0.1, 0.2, 0.5},
+                new int[]{2, 2, 2, 2},
+                new int[]{1, 1, 0, 1}, 0.65);
+    }
+
+    @Test
+    public void testWithdrawAllAustralianCurrency3() {
+        withdrawPositive(
+                new double[]{0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100},
+                new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
+                new int[]{1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0}, 35.75);
+    }
+
+
+    @Test
+    public void testWithdrawAllAustralianCurrency4() {
+        withdrawPositive(
+                new double[]{0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100},
+                new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
+                new int[]{1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0}, 35.65);
+    }
+
     private void withdrawPositive(double[] denominations, int[] counts, int[] expectedWithdrawals, double amount) {
         BigDecimal withdrawalAmount = new BigDecimal(amount);
         Device device = new Device();
         Set<Banknote> banknotes = new HashSet<>();
         Set<Coin> coins = new HashSet<>();
         for (int i = 0; i < denominations.length; i++) {
-            if (denominations[i] > 1) {
+            if (denominations[i] > 2) {
                 banknotes.add(new DenominationDTO(1L, new BigDecimal(denominations[i]), counts[i]).toBanknote(device));
             } else {
                 coins.add(new DenominationDTO(1L, new BigDecimal(denominations[i]), counts[i]).toCoin(device));
@@ -119,16 +143,17 @@ public class DeviceServiceTests {
         }
         device.setBanknotes(banknotes);
         device.setCoins(coins);
-        when(deviceRepository.findById(anyLong())).thenReturn(java.util.Optional.ofNullable(device));
+        when(deviceRepository.fetchByID(anyLong())).thenReturn(device);
         when(deviceRepository.save(device)).thenReturn(device);
         DeviceDTO withdraw = deviceService.withdraw(1L, withdrawalAmount);
+        assert withdraw.getErrors().size() == 0;
         withdraw.getBanknotes().stream().forEach(
                 denominationDTO -> {
                     int index = 0;
                     for (int i = 0; i < denominations.length; i++) {
-                        if (denominations[i] > 5) {
-                            if (denominationDTO.getDenomination().intValue() == denominations[i]) {
-                                assert denominationDTO.getCount() == counts[index] - expectedWithdrawals[index];
+                        if (denominations[i] > 2) {
+                            if (denominationDTO.getDenomination().doubleValue() == denominations[i]) {
+                                assert denominationDTO.getCount().intValue() == counts[i] - expectedWithdrawals[i];
                             }
                             index++;
                         }
@@ -139,9 +164,9 @@ public class DeviceServiceTests {
                 denominationDTO -> {
                     int index = 0;
                     for (int i = 0; i < denominations.length; i++) {
-                        if (denominations[i] < 1) {
+                        if (denominations[i] <= 2) {
                             if (denominationDTO.getDenomination().doubleValue() == denominations[i]) {
-                                assert denominationDTO.getCount() == counts[index] - expectedWithdrawals[index];
+                                assert denominationDTO.getCount().intValue() == counts[i] - expectedWithdrawals[i];
                             }
                             index++;
                         }

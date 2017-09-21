@@ -24,7 +24,7 @@ public class DenominationDTO implements Comparable<DenominationDTO> {
     }
 
     public DenominationDTO(BigDecimal denomination, Integer count) {
-        this.denomination = denomination;
+        this.denomination = denomination.setScale(2, BigDecimal.ROUND_HALF_UP);
         this.count = count;
     }
 

@@ -1,13 +1,13 @@
 package com.example.cashman.service;
 
-import com.example.cashman.repository.dto.DenominationDTO;
 import com.example.cashman.repository.dto.DeviceDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 
 public interface DeviceService {
+    int M_FACTOR = 100;
+
     Iterable<DeviceDTO> fetchAll();
 
     DeviceDTO fetchByID(Long id);
@@ -16,9 +16,12 @@ public interface DeviceService {
 
     @Transactional
     DeviceDTO addTo(Long id, DeviceDTO toAdd);
+
     @Transactional
     DeviceDTO withdraw(Long deviceId, BigDecimal amount);
+
     @Transactional
     DeviceDTO initializeATM(DeviceDTO atmDTO);
+
     boolean deactivateATM(Long id);
 }
