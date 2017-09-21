@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
 public interface DeviceService {
-    int M_FACTOR = 100;
+    int M_FACTOR = 20;
 
     Iterable<DeviceDTO> fetchAll();
 

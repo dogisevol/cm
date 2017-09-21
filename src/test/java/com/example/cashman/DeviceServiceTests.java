@@ -120,15 +120,6 @@ public class DeviceServiceTests {
                 new int[]{1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0}, 35.75);
     }
 
-
-    @Test
-    public void testWithdrawAllAustralianCurrency4() {
-        withdrawPositive(
-                new double[]{0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100},
-                new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
-                new int[]{1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0}, 35.65);
-    }
-
     private void withdrawPositive(double[] denominations, int[] counts, int[] expectedWithdrawals, double amount) {
         BigDecimal withdrawalAmount = new BigDecimal(amount);
         Device device = new Device();

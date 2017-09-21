@@ -1,5 +1,10 @@
 package com.example.cashman;
 
+import com.example.cashman.domain.Banknote;
+import com.example.cashman.domain.Coin;
+import com.example.cashman.domain.Device;
+import com.example.cashman.repository.dto.DenominationDTO;
+import com.example.cashman.repository.dto.DeviceDTO;
 import com.example.cashman.service.DeviceService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tomcat.jni.Poll;
@@ -17,15 +22,20 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static sun.audio.AudioDevice.device;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.assertj.core.util.Lists;
@@ -55,6 +65,8 @@ public class ControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Before
     public void setUp() {
@@ -75,31 +87,29 @@ public class ControllerTest {
 
     }
 
-//    @Test
-//    public void testPostQuestions() throws Exception {
-//        Mockito.mock(PollModel.class);
-//        assertResult(this.mockMvc.perform(post("/device")
-//                .content(objectMapper.writeValueAsString(new PollModel("Question", Lists.newArrayList(""))))
-//                .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                .accept(MediaType.parseMediaType("application/json;charset=UTF-8"))).andExpect(status().isCreated()));
-//    }
-//
-//    private void assertResult(ResultActions perform) throws Exception {
-//        String content = perform
-//                .andExpect(content().contentType(MediaType.parseMediaType("application/json;charset=UTF-8")))
-//                .andReturn().getResponse().getContentAsString();
-//        assert content.contains(publishedAt);
-//        assert content.contains("Question");
-//        assert content.contains("Choice");
-//    }
+    @Test
+    public void testPostDevice() throws Exception {
+        DeviceDTO device = new DeviceDTO();
+        device.setSerialNumber("Test device");
+        Set<DenominationDTO> banknotes = new HashSet<>();
+        Set<DenominationDTO> coins = new HashSet<>();
+        device.setCoins(coins);
+        device.setBanknotes(banknotes);
+        coins.add(new DenominationDTO(new BigDecimal(0.05), 100));
+        banknotes.add(new DenominationDTO(new BigDecimal(5), 100));
 
+
+        assertResult(this.mockMvc.perform(post("/device")
+                .content(objectMapper.writeValueAsString(device))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.parseMediaType("application/json;charset=UTF-8"))));
+    }
 
     private void assertResult(ResultActions perform) throws Exception {
         String content = perform
                 .andExpect(content().contentType(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andReturn().getResponse().getContentAsString();
-//        assert content.contains(publishedAt);
-        assert content.contains("Question");
-        assert content.contains("Choice");
+        assert content.contains("coins");
+        assert content.contains("banknotes");
     }
 }
