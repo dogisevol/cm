@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -56,12 +57,12 @@ public class DeviceServiceImpl implements DeviceService {
             result = new DeviceDTO(Error.DEVICE_NOT_FOUND_ERROR);
         } else {
             device.getBanknotes().stream().forEach(banknote -> toAdd.getBanknotes().forEach(denominationDTO -> {
-                if (denominationDTO.getDenomination().doubleValue() == banknote.getDenomination().doubleValue()){
+                if (denominationDTO.getDenomination().doubleValue() == banknote.getDenomination().doubleValue()) {
                     banknote.setCount(banknote.getCount() + denominationDTO.getCount());
                 }
             }));
             device.getCoins().stream().forEach(coin -> toAdd.getCoins().forEach(denominationDTO -> {
-                if (denominationDTO.getDenomination().doubleValue() == coin.getDenomination().doubleValue()){
+                if (denominationDTO.getDenomination().doubleValue() == coin.getDenomination().doubleValue()) {
                     coin.setCount(coin.getCount() + denominationDTO.getCount());
                 }
             }));
@@ -72,10 +73,15 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public DeviceDTO withdraw(Long deviceId, BigDecimal amount) {
+        return withdraw(deviceId, amount, TYPE_BOTH);
+    }
+
+    @Override
+    public DeviceDTO withdraw(Long deviceId, BigDecimal amount, int type) {
         DeviceDTO result;
         Device device = deviceRepository.fetchByID(deviceId);
         if (device != null) {
-            if (withdraw(device, amount)) {
+            if (withdraw(device, amount, type)) {
                 result = new DeviceDTO(deviceRepository.save(device));
             } else {
                 result = new DeviceDTO(Error.WITHDRAWAL_ERROR);
@@ -104,10 +110,8 @@ public class DeviceServiceImpl implements DeviceService {
         return false;
     }
 
-    private boolean withdraw(Device device, BigDecimal amount) {
+    private boolean withdraw(Device device, BigDecimal amount, int type) {
         amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
-        final BigDecimal mFactor = new BigDecimal(M_FACTOR);
-        int withdrawAmount = amount.multiply(mFactor).intValue();
         List<Banknote> banknotes = new ArrayList(device.getBanknotes());
         List<Coin> coins = new ArrayList(device.getCoins());
         sortDenominations(banknotes);
@@ -123,7 +127,38 @@ public class DeviceServiceImpl implements DeviceService {
                 weights.add(coins.get(i));
             }
         }
+        if (type == TYPE_GREEDY) {
+            return tryGreedy(amount, weights);
+        } else if (type == TYPE_KNAPSACK) {
+            return tryZeroOneKnapsack(amount, weights);
+        } else {
+            return tryGreedy(amount, weights) || tryZeroOneKnapsack(amount, weights);
+        }
+    }
+
+    private boolean tryGreedy(BigDecimal amount, List<Denomination> weights) {
+        List<Denomination> list = new LinkedList<>();
+        BigDecimal result = new BigDecimal(0);
+        for (int i = 0; i < weights.size() - 1; i++) {
+            Denomination denomination = weights.get(i);
+            BigDecimal d1 = denomination.getDenomination();
+            BigDecimal sum = result.add(d1);
+            if (sum.compareTo(amount) < 1) {
+                list.add(denomination);
+                result = sum;
+                if (result.compareTo(amount) == 0) {
+                    list.stream().forEach(den -> den.setCount(den.getCount() - 1));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean tryZeroOneKnapsack(BigDecimal amount, List<Denomination> weights) {
         int N = weights.size();
+        final BigDecimal mFactor = new BigDecimal(M_FACTOR);
+        int withdrawAmount = amount.multiply(mFactor).intValue();
         int[][] A = new int[N][withdrawAmount + 1];
         for (int x = 0; x <= withdrawAmount; x++) {
             A[0][x] = 0;

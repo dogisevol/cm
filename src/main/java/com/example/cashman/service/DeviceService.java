@@ -7,6 +7,9 @@ import java.math.BigDecimal;
 
 public interface DeviceService {
     int M_FACTOR = 20;
+    int TYPE_GREEDY = 1;
+    int TYPE_KNAPSACK = 2;
+    int TYPE_BOTH = 0;
 
     Iterable<DeviceDTO> fetchAll();
 
@@ -19,6 +22,9 @@ public interface DeviceService {
 
     @Transactional
     DeviceDTO withdraw(Long deviceId, BigDecimal amount);
+
+    @Transactional
+    DeviceDTO withdraw(Long deviceId, BigDecimal amount, int type);
 
     @Transactional
     DeviceDTO initializeATM(DeviceDTO atmDTO);

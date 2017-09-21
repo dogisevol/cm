@@ -120,6 +120,10 @@ public class DeviceServiceTests {
                 new int[]{1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0}, 35.75);
     }
 
+    private void withdrawGreedy(double[] denominations, int[] counts, int[] expectedWithdrawals, double amount) {
+
+    }
+
     private void withdrawPositive(double[] denominations, int[] counts, int[] expectedWithdrawals, double amount) {
         BigDecimal withdrawalAmount = new BigDecimal(amount);
         Device device = new Device();
