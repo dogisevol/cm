@@ -20,62 +20,64 @@ Cashman is a simple API allowing to initialize and update atm state
 #### List All Devices [GET]
 
 + Response 200 (application/json)
-[
-	{
-	   "serialNumber":"my device",
-	   "banknotes":[
-		  {
-			 "denomination":5.00,
-			 "count":100,
-			 "id":5
-		  },
-		  {
-			 "denomination":100.00,
-			 "count":100,
-			 "id":2
-		  }
-	   ],
-	   "coins":[
-		  {
-			 "denomination":0.50,
-			 "count":100,
-			 "id":7
-		  },
-		  {
-			 "denomination":0.10,
-			 "count":100,
-			 "id":6
-		  }
-	   ]
-	}
-]
+
+		[
+			{
+			   "serialNumber":"my device",
+			   "banknotes":[
+				  {
+					 "denomination":5.00,
+					 "count":100,
+					 "id":5
+				  },
+				  {
+					 "denomination":100.00,
+					 "count":100,
+					 "id":2
+				  }
+			   ],
+			   "coins":[
+				  {
+					 "denomination":0.50,
+					 "count":100,
+					 "id":7
+				  },
+				  {
+					 "denomination":0.10,
+					 "count":100,
+					 "id":6
+				  }
+			   ]
+			}
+		]
+		
 #### Initialize a new device [POST]
 
 + Request (application/json)
 
-	{
-	   "serialNumber":"myNumber",
-	   "banknotes":[
-		  {
-			 "denomination":5.00,
-			 "count":100
-		  },
-		  {
-			 "denomination":100.00,
-			 "count":100
-		  }
-	   ],
-	   "coins":[
-		  {
-			 "denomination":0.50,
-			 "count":100
-		  },
-		  {
-			 "denomination":0.10,
-			 "count":100
-		  }
-	   ]
-	}
+		{
+		   "serialNumber":"myNumber",
+		   "banknotes":[
+			  {
+				 "denomination":5.00,
+				 "count":100
+			  },
+			  {
+				 "denomination":100.00,
+				 "count":100
+			  }
+		   ],
+		   "coins":[
+			  {
+				 "denomination":0.50,
+				 "count":100
+			  },
+			  {
+				 "denomination":0.10,
+				 "count":100
+			  }
+		   ]
+		}
 
 + Response 201 (application/json)
 
@@ -85,123 +87,129 @@ Cashman is a simple API allowing to initialize and update atm state
 
     + Body
 
-    {
-        "id": 103,
-        "serialNumber": "myNumber",
-        "banknotes":
-        [
-            {
-                "denomination": 5,
-                "count": 100,
-                "id": 20
-            },
-            {
-                "denomination": 100,
-                "count": 100,
-                "id": 21
-            }
-        ],
-        "coins":
-        [
-            {
-                "denomination": 0.5,
-                "count": 100,
-                "id": 22
-            },
-            {
-                "denomination": 0.1,
-                "count": 100,
-                "id": 23
-            }
-        ],
-        "errors":
-        [
-        ]
-    }
+			{
+				"id": 103,
+				"serialNumber": "myNumber",
+				"banknotes":
+				[
+					{
+						"denomination": 5,
+						"count": 100,
+						"id": 20
+					},
+					{
+						"denomination": 100,
+						"count": 100,
+						"id": 21
+					}
+				],
+				"coins":
+				[
+					{
+						"denomination": 0.5,
+						"count": 100,
+						"id": 22
+					},
+					{
+						"denomination": 0.1,
+						"count": 100,
+						"id": 23
+					}
+				],
+				"errors":
+				[
+				]
+			}
 
 ### Device [/device/{id}]
 
 #### Find by id [GET]
+
 + Request (application/json)
 
 + Response 404 (not found)
+
 + Response 200 (application/json)
+
     + Body   
 
-    {
-        "id": 103,
-        "serialNumber": "myNumber",
-        "banknotes":
-        [
-            {
-                "denomination": 5,
-                "count": 100,
-                "id": 20
-            },
-            {
-                "denomination": 100,
-                "count": 100,
-                "id": 21
-            }
-        ],
-        "coins":
-        [
-            {
-                "denomination": 0.5,
-                "count": 100,
-                "id": 22
-            },
-            {
-                "denomination": 0.1,
-                "count": 100,
-                "id": 23
-            }
-        ],
-        "errors":
-        [
-        ]
-    }
+			{
+				"id": 103,
+				"serialNumber": "myNumber",
+				"banknotes":
+				[
+					{
+						"denomination": 5,
+						"count": 100,
+						"id": 20
+					},
+					{
+						"denomination": 100,
+						"count": 100,
+						"id": 21
+					}
+				],
+				"coins":
+				[
+					{
+						"denomination": 0.5,
+						"count": 100,
+						"id": 22
+					},
+					{
+						"denomination": 0.1,
+						"count": 100,
+						"id": 23
+					}
+				],
+				"errors":
+				[
+				]
+			}
 	
 ### Device [/withdraw/{id}/{withdrawAmount}]
 
 #### Withdraw from atm [PUT]	
 
 + Response 404 (not found)
+
 + Response 200 (application/json)
-    + Body   
-    {
-        "id": 103,
-        "serialNumber": "myNumber",
-        "banknotes":
-        [
-            {
-                "denomination": 5,
-                "count": 100,
-                "id": 20
-            },
-            {
-                "denomination": 100,
-                "count": 100,
-                "id": 21
-            }
-        ],
-        "coins":
-        [
-            {
-                "denomination": 0.5,
-                "count": 100,
-                "id": 22
-            },
-            {
-                "denomination": 0.1,
-                "count": 100,
-                "id": 23
-            }
-        ],
-        "errors":
-        [
-        ]
-    }
+
+    + Body 
+	
+			{
+				"id": 103,
+				"serialNumber": "myNumber",
+				"banknotes":
+				[
+					{
+						"denomination": 5,
+						"count": 100,
+						"id": 20
+					},
+					{
+						"denomination": 100,
+						"count": 100,
+						"id": 21
+					}
+				],
+				"coins":
+				[
+					{
+						"denomination": 0.5,
+						"count": 100,
+						"id": 22
+					},
+					{
+						"denomination": 0.1,
+						"count": 100,
+						"id": 23
+					}
+				],
+				"errors":
+				[
+				]
+			}
 	
 ### Device [/addTo/{id}]
 
@@ -209,71 +217,75 @@ Cashman is a simple API allowing to initialize and update atm state
 
 + Request (application/json)
 
-	{
-	   "serialNumber":"myNumber",
-	   "banknotes":[
-		  {
-			 "denomination":5.00,
-			 "count":100
-		  },
-		  {
-			 "denomination":100.00,
-			 "count":100
-		  }
-	   ],
-	   "coins":[
-		  {
-			 "denomination":0.50,
-			 "count":100
-		  },
-		  {
-			 "denomination":0.10,
-			 "count":100
-		  }
-	   ]
-	}
+		{
+		   "serialNumber":"myNumber",
+		   "banknotes":[
+			  {
+				 "denomination":5.00,
+				 "count":100
+			  },
+			  {
+				 "denomination":100.00,
+				 "count":100
+			  }
+		   ],
+		   "coins":[
+			  {
+				 "denomination":0.50,
+				 "count":100
+			  },
+			  {
+				 "denomination":0.10,
+				 "count":100
+			  }
+		   ]
+		}
 
 + Response 404 (not found)
+
 + Response 200 (application/json)	
-{
-        "id": 103,
-        "serialNumber": "myNumber",
-        "banknotes":
-        [
-            {
-                "denomination": 5,
-                "count": 200,
-                "id": 20
-            },
-            {
-                "denomination": 100,
-                "count": 200,
-                "id": 21
-            }
-        ],
-        "coins":
-        [
-            {
-                "denomination": 0.5,
-                "count": 200,
-                "id": 22
-            },
-            {
-                "denomination": 0.1,
-                "count": 200,
-                "id": 23
-            }
-        ],
-        "errors":
-        [
-        ]
-    }
+
+		{
+			"id": 103,
+			"serialNumber": "myNumber",
+			"banknotes":
+			[
+				{
+					"denomination": 5,
+					"count": 200,
+					"id": 20
+				},
+				{
+					"denomination": 100,
+					"count": 200,
+					"id": 21
+				}
+			],
+			"coins":
+			[
+				{
+					"denomination": 0.5,
+					"count": 200,
+					"id": 22
+				},
+				{
+					"denomination": 0.1,
+					"count": 200,
+					"id": 23
+				}
+			],
+			"errors":
+			[
+			]
+		}
 
 	
 ## TODO	
 
-+ Branch and Bound Knapsack
+	+ Branch and Bound Knapsack
 
-+ Cover all controllers with tests
+	+ Error handling 
 
-+ Find more contrexamples
+	+ Cover all controllers with tests
+
+	+ Find more contrexamples
