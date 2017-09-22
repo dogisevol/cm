@@ -12,6 +12,10 @@ Cashman is a simple API allowing to initialize and update atm state
 	java -jar target/cashman-0.0.1-SNAPSHOT.jar
 	or
 	mvn spring-boot:start
+	
+## Other
+	H2 console is available on http://localhost:8080/h2-console/	
+	JDBC URL: jdbc:h2:mem:device
 
 ## API	
 
