@@ -1,9 +1,9 @@
 FORMAT: 1A
 HOST: http://cashman.example.com
 
-# Test
+#Application 
 
-Polls is a simple API allowing to initialize and update atm state
+Cashman is a simple API allowing to initialize and update atm state
 
 ## Build
 	mvn package
