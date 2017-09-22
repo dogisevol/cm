@@ -70,13 +70,6 @@ public class ControllerTest {
 
     @Before
     public void setUp() {
-//        List<PollDTO> polls = new ArrayList();
-//        List<ChoiceDTO> choices = new ArrayList();
-//        choices.add(new ChoiceDTO("Choice", 10));
-//        PollDTO pollDTO = new PollDTO(1L, "Question", now, choices);
-//        polls.add(pollDTO);
-//
-//        Mockito.when(deviceService.fetchAll()).thenReturn(polls);
     }
 
     @Test

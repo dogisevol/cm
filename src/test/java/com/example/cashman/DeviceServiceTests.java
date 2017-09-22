@@ -36,95 +36,101 @@ public class DeviceServiceTests {
 
     @Test
     public void testBaseCase1() {
-        withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{1, 0}, 20);
+        assert withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{1, 0}, 20, true, true);
     }
 
     @Test
     public void testBaseCase2() {
-        withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{2, 0}, 40);
+        assert withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{2, 0}, 40, true, true);
     }
 
     @Test
     public void testBaseCase3() {
-        withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{0, 1}, 50);
+        assert withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{0, 1}, 50, true, true);
     }
 
     @Test
     public void testBaseCase4() {
-        withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{1, 1}, 70);
+        assert withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{1, 1}, 70, true, true);
     }
 
     @Test
     public void testBaseCase5() {
-        withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{4, 0}, 80);
+        assert withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{4, 0}, 80, true, true);
     }
 
     @Test
     public void testBaseCase6() {
-        withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{0, 2}, 100);
+        assert withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{0, 2}, 100, true, true);
     }
 
     @Test
     public void testBaseCase7() {
-        withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{0, 3}, 150);
+        assert withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{0, 3}, 150, true, true);
     }
 
     @Test
     public void testBaseCase8() {
-        withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{3, 0}, 60);
+        assert withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{3, 0}, 60, true, true);
     }
 
     @Test
     public void testBaseCase9() {
-        withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{3, 1}, 110);
+        assert withdrawPositive(new double[]{20, 50}, new int[]{10, 10}, new int[]{3, 1}, 110, true, true);
     }
 
     @Test
     public void testBaseCase10() {
-        withdrawPositive(new double[]{20, 50}, new int[]{8, 3}, new int[]{5, 2}, 200);
+        assert withdrawPositive(new double[]{20, 50}, new int[]{8, 3}, new int[]{5, 2}, 200, true, true);
     }
 
     //Extended test cases
     @Test
     public void testExtendedCase11() {
-        withdrawPositive(new double[]{5, 10, 20}, new int[]{10, 10, 10}, new int[]{1, 1, 1}, 35);
+        assert withdrawPositive(new double[]{5, 10, 20}, new int[]{10, 10, 10}, new int[]{1, 1, 1}, 35, true, true);
     }
 
     //Test cases with coins
     @Test
     public void testWithdrawAllAustralianCurrency1() {
-        withdrawPositive(new double[]{0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100},
+        assert withdrawPositive(new double[]{0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100},
                 new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
-                new int[]{0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0}, 35.5);
+                new int[]{0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0}, 35.5, true, true);
     }
 
     @Test
     public void testWithdrawAllAustralianCurrency2() {
-        withdrawPositive(new double[]{0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100},
+        assert withdrawPositive(new double[]{0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100},
                 new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
-                new int[]{0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0}, 37.7);
+                new int[]{0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0}, 37.7, true, true);
     }
 
     @Test
     public void testWithdraw() {
-        withdrawPositive(new double[]{0.05, 0.1, 0.2, 0.5},
+        assert withdrawPositive(new double[]{0.05, 0.1, 0.2, 0.5},
                 new int[]{2, 2, 2, 2},
-                new int[]{1, 1, 0, 1}, 0.65);
+                new int[]{1, 1, 0, 1}, 0.65, true, true);
     }
 
     @Test
     public void testWithdrawAllAustralianCurrency3() {
-        withdrawPositive(
+        assert withdrawPositive(
                 new double[]{0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100},
                 new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10},
-                new int[]{1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0}, 35.75);
+                new int[]{1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0}, 35.75, true, true);
     }
 
-    private void withdrawGreedy(double[] denominations, int[] counts, int[] expectedWithdrawals, double amount) {
-
+    private boolean withdrawPositive(double[] denominations, int[] counts, int[] expectedWithdrawals, double amount, boolean passGreedy, boolean passKnapsack) {
+        boolean result;
+        boolean greedy = withdrawPositive(denominations, counts, expectedWithdrawals, amount, DeviceService.TYPE_GREEDY);
+        result = passGreedy ? greedy : !greedy;
+        boolean knapsack = withdrawPositive(denominations, counts, expectedWithdrawals, amount, DeviceService.TYPE_KNAPSACK);
+        result &= passKnapsack ? knapsack : !knapsack;
+        return result;
     }
 
-    private void withdrawPositive(double[] denominations, int[] counts, int[] expectedWithdrawals, double amount) {
+    private boolean withdrawPositive(double[] denominations, int[] counts, int[] expectedWithdrawals, double amount, int type) {
+        boolean[] result = new boolean[]{true};
         BigDecimal withdrawalAmount = new BigDecimal(amount);
         Device device = new Device();
         Set<Banknote> banknotes = new HashSet<>();
@@ -140,34 +146,31 @@ public class DeviceServiceTests {
         device.setCoins(coins);
         when(deviceRepository.fetchByID(anyLong())).thenReturn(device);
         when(deviceRepository.save(device)).thenReturn(device);
-        DeviceDTO withdraw = deviceService.withdraw(1L, withdrawalAmount);
+        DeviceDTO withdraw = deviceService.withdraw(1L, withdrawalAmount, type);
         assert withdraw.getErrors().size() == 0;
         withdraw.getBanknotes().stream().forEach(
                 denominationDTO -> {
-                    int index = 0;
                     for (int i = 0; i < denominations.length; i++) {
                         if (denominations[i] > 2) {
                             if (denominationDTO.getDenomination().doubleValue() == denominations[i]) {
-                                assert denominationDTO.getCount().intValue() == counts[i] - expectedWithdrawals[i];
+                                result[0] = result[0] && denominationDTO.getCount().intValue() == counts[i] - expectedWithdrawals[i];
                             }
-                            index++;
                         }
                     }
                 }
         );
         withdraw.getCoins().stream().forEach(
                 denominationDTO -> {
-                    int index = 0;
                     for (int i = 0; i < denominations.length; i++) {
                         if (denominations[i] <= 2) {
                             if (denominationDTO.getDenomination().doubleValue() == denominations[i]) {
-                                assert denominationDTO.getCount().intValue() == counts[i] - expectedWithdrawals[i];
+                                result[0] = result[0] && denominationDTO.getCount().intValue() == counts[i] - expectedWithdrawals[i];
                             }
-                            index++;
                         }
                     }
                 }
         );
+        return result[0];
     }
 
 }

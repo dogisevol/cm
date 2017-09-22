@@ -47,7 +47,7 @@ public class DeviceController {
             return ResponseEntity.notFound().build();
     }
 
-    @RequestMapping(value = "/atm", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/device", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @Transactional
     public ResponseEntity<DeviceDTO> findATM(@RequestParam String serialNumber) {

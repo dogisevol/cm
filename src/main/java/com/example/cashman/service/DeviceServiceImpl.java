@@ -137,18 +137,20 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     private boolean tryGreedy(BigDecimal amount, List<Denomination> weights) {
-        List<Denomination> list = new LinkedList<>();
-        BigDecimal result = new BigDecimal(0);
         for (int i = 0; i < weights.size() - 1; i++) {
-            Denomination denomination = weights.get(i);
-            BigDecimal d1 = denomination.getDenomination();
-            BigDecimal sum = result.add(d1);
-            if (sum.compareTo(amount) < 1) {
-                list.add(denomination);
-                result = sum;
-                if (result.compareTo(amount) == 0) {
-                    list.stream().forEach(den -> den.setCount(den.getCount() - 1));
-                    return true;
+            List<Denomination> list = new LinkedList<>();
+            BigDecimal result = new BigDecimal(0);
+            for (int j = i; j < weights.size() - 1; j++) {
+                Denomination denomination = weights.get(j);
+                BigDecimal d1 = denomination.getDenomination();
+                BigDecimal sum = result.add(d1);
+                if (sum.compareTo(amount) < 1) {
+                    list.add(denomination);
+                    result = sum;
+                    if (result.compareTo(amount) == 0) {
+                        list.stream().forEach(den -> den.setCount(den.getCount() - 1));
+                        return true;
+                    }
                 }
             }
         }
