@@ -286,7 +286,7 @@ Cashman is a simple API allowing to initialize and update atm state
 	
 ## TODO	
 
-+ Branch and Bound Knapsack
++ Branch and Bound Knapsack (knapsack is used for non-canonical monetary systems for which non greedy algorythm doesn't work correctly)
 
 + Error handling 
 
