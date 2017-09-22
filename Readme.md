@@ -1,7 +1,7 @@
 FORMAT: 1A
-HOST: http://cashman.example.com
+HOST:
 
-#Application 
+# Application 
 
 Cashman is a simple API allowing to initialize and update atm state
 
@@ -15,9 +15,9 @@ Cashman is a simple API allowing to initialize and update atm state
 
 ## API	
 
-## Devices Collection [/device]
+### Devices Collection [/device]
 
-### List All Devices [GET]
+#### List All Devices [GET]
 
 + Response 200 (application/json)
 [
@@ -49,7 +49,7 @@ Cashman is a simple API allowing to initialize and update atm state
 	   ]
 	}
 ]
-### Initialize a new device [POST]
+#### Initialize a new device [POST]
 
 + Request (application/json)
 
@@ -119,9 +119,9 @@ Cashman is a simple API allowing to initialize and update atm state
         ]
     }
 
-## Device [/device/{id}]
+### Device [/device/{id}]
 
-### Find by id [GET]
+#### Find by id [GET]
 + Request (application/json)
 
 + Response 404 (not found)
@@ -162,9 +162,9 @@ Cashman is a simple API allowing to initialize and update atm state
         ]
     }
 	
-## Device [/withdraw/{id}/{withdrawAmount}]
+### Device [/withdraw/{id}/{withdrawAmount}]
 
-### Withdraw from atm [PUT]	
+#### Withdraw from atm [PUT]	
 
 + Response 404 (not found)
 + Response 200 (application/json)
@@ -203,9 +203,9 @@ Cashman is a simple API allowing to initialize and update atm state
         ]
     }
 	
-## Device [/addTo/{id}]
+### Device [/addTo/{id}]
 
-### Add to atm [PUT]	
+#### Add to atm [PUT]	
 
 + Request (application/json)
 
@@ -268,3 +268,12 @@ Cashman is a simple API allowing to initialize and update atm state
         [
         ]
     }
+
+	
+## TODO	
+
++ Branch and Bound Knapsack
+
++ Cover all controllers with tests
+
++ Find more contrexamples
