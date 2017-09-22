@@ -282,10 +282,10 @@ Cashman is a simple API allowing to initialize and update atm state
 	
 ## TODO	
 
-	+ Branch and Bound Knapsack
++ Branch and Bound Knapsack
 
-	+ Error handling 
++ Error handling 
 
-	+ Cover all controllers with tests
++ Cover all controllers with tests
 
-	+ Find more contrexamples
++ Find more contrexamples
