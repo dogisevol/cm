@@ -286,6 +286,6 @@ Cashman is a simple API allowing to initialize and update atm state
 
 + Error handling 
 
-+ Cover all controllers with tests
++ Cover all controller methods with tests
 
-+ Find more contrexamples
++ Find more counterexamples
